@@ -1,0 +1,60 @@
+body{
+    background-color: #F9FBF2;
+    margin: 0; 
+    padding: 0; 
+}
+
+.navbar {
+    background: #1a141a; 
+    position: fixed; 
+    z-index: 1000; 
+    top: 0;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Links inside the nav bar */
+  .navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: 'More Sugar Thin';
+  
+  } 
+  
+    /* Change background on mouse-over in nav bar */
+    .navbar a:hover {
+      background: #423738;
+      color: white;}
+  
+      .navbar .icon {
+        display: none;
+      }
+  
+      @media screen and (max-width: 600px) {
+        .navbar a:not(:first-child) {display: none;}
+        .navbar a.icon {
+          float: right;
+          display: block;
+        }
+      }
+      
+      @media screen and (max-width: 600px) {
+        .navbar.responsive {position: relative;}
+        .navbar.responsive .icon {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+        .navbar.responsive a {
+          float: none;
+          display: block;
+          text-align: left;
+        }
+        }
+  
+  
