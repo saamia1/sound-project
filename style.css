@@ -1,25 +1,38 @@
 /* Color Palette */
 :root {
   --dark-maroon: #200002;
-  --deep-red: #77130B;
+  --deep-red: #581916;
   --off-white: #F8F8F6;
   --pale-gray: #B9B2B2;
   --rust-red: #B43E2D;
+  --bloody-red: #850202;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
 
+html, body {
+  height: 100%;
+}
+
+body.index-page {
+  background: url('images/spooky.png') no-repeat center center fixed;
+  background-size: cover;
+  background-color: var(--dark-maroon);
+}
+
+body:not(.index-page) {
+  background-color: var(--deep-red);
+}
+
 body {
   margin: 0;
   font-family: 'Creepster', cursive;
-  background: url('images/spooky.png') no-repeat center center fixed;
-  background-size: cover;
   color: var(--off-white);
   overflow-x: hidden;
 }
 
 .navbar {
-  background: var(--deep-red);
+  background: var(--dark-maroon);
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -62,7 +75,8 @@ body {
 }
 
 .content {
-  padding: 80px 20px;
+  margin-top: 80px;
+  padding: 40px;
   min-height: 100vh;
   position: relative;
   z-index: 2;
@@ -87,11 +101,15 @@ body {
 }
 
 .image-box {
-  background: var(--pale-gray);
-  width: 300px;
-  height: 300px;
+  background: var(--deep-red);
+  width: 600px;
+  height: 600px;
   margin: 10px;
-  box-shadow: 0 0 15px #b43e2d66;
+}
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .text-box {
@@ -181,30 +199,103 @@ body {
   }
 }
 
-.fog-layer {
+/* taken from website: https://codepen.io/gilson-santos-the-typescripter/pen/yLQdeNx */
+#canvas {
   position: fixed;
   top: 0;
   left: 0;
-  width: 120vw;
-  height: 120vh;
-  background: radial-gradient(circle, rgba(255,255,255,0.04) 20%, transparent 70%);
-  filter: blur(60px);
-  animation: drift 60s linear infinite;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  z-index: 1;
-  opacity: 0.4;
+  z-index: 20;
 }
 
-@keyframes drift {
-  0% {
-    transform: translate(-20%, -10%);
-  }
-  100% {
-    transform: translate(20%, 10%);
-  }
+/* text sits within the fog cloud layer */
+#fog-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  color: var(--bloody-red);
+  z-index: 5; /* sits above some fog particles */
+  text-shadow: 3px 3px 8px var(--dark-maroon);
+  animation: blur 3s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes blur {
+  0% {text-shadow:  2px -2px 8px var(--dark-maroon); }
+  10% {text-shadow:  -3px -1px 2px var(--deep-red);}
+  30% {text-shadow:  -4px 3px 5px var(--rust-red);}
+  50% {text-shadow:  2px 1px 8px var(--rust-red);}
+  70% {text-shadow:  -3px -2px 3px var(--dark-maroon);}
+  90% {text-shadow:  -2px 1px 10px var(--rust-red);}
+  100% {text-shadow:  3px -2px 8px var(--dark-maroon); }
 }
 
-body.lightning-flash {
-  background-color: rgba(255, 255, 255, 0.2);
-  transition: background-color 0.1s;
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(20, 20, 20, 0.95);
+  color: white;
+  padding: 30px;
+  border: 2px solid var(--rust-red);
+  border-radius: 10px;
+  z-index: 10000;
+  text-align: center;
+  font-family: 'Creepster', cursive;
+}
+
+.popup button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: var(--rust-red);
+  border: none;
+  color: var(--off-white);
+  cursor: pointer;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+#story-audio {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 75%;
+  transform: translateX(-50%);
+  z-index: 11;
+  pointer-events: auto;
+  border-radius: 50px;
+}
+
+#story-audio:hover {
+  box-shadow: 0 0 12px var(--rust-red), 0 0 20px var(--rust-red);
+  transition: box-shadow 0.3s ease;
+}
+
+#story-audio::-webkit-media-controls-panel {
+  background-color: var(--deep-red);
+  border-radius: 20px;
+}
+#story-audio::-webkit-media-controls-play-button {
+  background-color: var(--rust-red);
+  border-radius: 50%;
+}
+#story-audio::-webkit-media-controls-volume-slider {
+  background-color: var(--rust-red);
+  border-radius: 10px;
+}
+#story-audio::-webkit-media-controls-current-time-display,
+#story-audio::-webkit-media-controls-time-remaining-display {
+  color: var(--off-white);
+}
+
+#story-audio::-webkit-media-controls-mute-button {
+  background-color: var(--rust-red);
+  border-radius: 50%;
 }

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
   
 </head>
-<body>
+<body class="index-page">
   <!-- Navigation Bar -->
   <div class="navbar" id="myTopnav">
     <div class="brand">NOT ALONE</div>
@@ -18,7 +18,25 @@
       <a href="behindthescenes.html" class="active">Behind Scenes</a>
     </div>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">☰</a>
-  </div>  
+  </div> 
+
+  <div id="canvas">
+    <h1 id="fog-title">NOT ALONE!</h1>
+    <audio id="story-audio" controls>
+      <source src="not_alone.mp3" type="audio/mp3">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <div id="quiz-popup" class="popup hidden">
+    <p>Whom do you think it was?</p>
+    <button onclick="selectAnswer('mother')">Mother</button>
+    <button onclick="selectAnswer('thief')">Thief</button>
+    <button onclick="selectAnswer('cat')">Cat</button>
+  </div>
+  
+  <div id="quiz-feedback" class="popup hidden"></div>  
+
   <script>
     function myFunction() {
       var x = document.getElementById("myTopnav");

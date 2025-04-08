@@ -1,24 +1,128 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Create fog
-    const fog = document.createElement('div');
-    fog.className = 'fog-layer';
-    document.body.appendChild(fog);
-  
-    // Thunder and flash
-    function triggerThunder() {
-      document.body.classList.add('lightning-flash');
-      const sound = new Audio('https://www.soundjay.com/nature/thunder-01.mp3');
-      sound.volume = 0.3;
-      sound.play();
-      setTimeout(() => {
-        document.body.classList.remove('lightning-flash');
-      }, 150);
+let canvas = document.getElementById("canvas");
+class Fog {
+    constructor(x, y, tamanho, direction, velocity) {
+        this.x = x;
+        this.y = y;
+        this.width = tamanho.w;
+        this.height = tamanho.h;
+        this.me = document.createElement("div");
+        this.direction = direction;
+        this.velocity = velocity;
     }
-  
-    setInterval(() => {
-      if (Math.random() > 0.7) {
-        triggerThunder();
-      }
-    }, 4000);
+    create() {
+        this.me.style.width = this.width + "px";
+        this.me.style.height = this.height + "px";
+        this.me.style.backgroundColor = "rgba(180, 180, 180, 0.35)"; // more solid gray fog
+        this.me.style.position = "absolute";
+        this.me.style.zIndex = Math.random() > 0.5 ? "4" : "6"; // behind or in front of text
+        this.me.style.opacity = 0.85; // stronger!
+        this.me.style.filter = "blur(25px)"; // tighter fog — more visible
+        this.me.style.borderRadius = "50%";
+        canvas.appendChild(this.me);
+    }      
+    animation() {
+        this.me.style.left = this.x + "px";
+        this.me.style.top = this.y + "px";
+        switch (this.direction) {
+            case 0:
+                this.x -= this.velocity;
+                if (this.x + this.width < 0) {
+                    this.x = canvas.clientWidth + this.width;
+                }
+                break;
+            case 1:
+                this.x += this.velocity;
+                if (this.x + this.width > canvas.width) {
+                    this.me.style.left = -this.width + "px";
+                }
+                break;
+        }
+    }
+}
+const fogCount = 20;
+const array = [];
+
+for (let i = 0; i < fogCount; i++) {
+  const size = {
+    w: Math.floor(Math.random() * 150 + 80),
+    h: Math.floor(Math.random() * 150 + 80)
+  };
+
+  const x = Math.floor(Math.random() * window.innerWidth);
+  const y = Math.floor(Math.random() * window.innerHeight);
+  const velocity = Math.random() * 1.8 + 1.2;
+
+  array.push(new Fog(x, y, size, 0, velocity));
+}
+
+function CreateNeb() {
+  array.forEach((ele) => {
+    ele.create();
+    ele.animation();
   });
-  
+  requestAnimationFrame(CreateNeb);
+}
+
+CreateNeb();
+const audio = document.getElementById("story-audio");
+const popup = document.getElementById("quiz-popup");
+const feedback = document.getElementById("quiz-feedback");
+
+let userAnswer = null;
+let quizAsked = false;
+let feedbackShown = false;
+
+audio.addEventListener("timeupdate", () => {
+  const currentTime = audio.currentTime;
+
+  // Flicker effect just before quiz
+  if (Math.floor(currentTime) === 95) {
+    audio.classList.add('flicker');
+  }
+
+  // Pause and show quiz at 1:36
+  if (!quizAsked && currentTime >= 96) {
+    quizAsked = true;
+    audio.pause();
+    popup.classList.remove("hidden");
+    audio.classList.remove('flicker');
+  }
+
+  // Show result at end
+  if (!feedbackShown && currentTime >= 119) {
+    feedbackShown = true;
+
+    let message = "Let's see... ";
+
+    if (userAnswer === "cat") {
+      message += "You were right! 🐈 It was the cat all along.";
+    } else {
+      message += "Wrong guess. It was the cat! 🐈";
+    }
+
+    feedback.textContent = message;
+    feedback.classList.remove("hidden");
+
+    // ⏱ Auto-hide result after 7 seconds
+    setTimeout(() => {
+      feedback.classList.add("hidden");
+      // Allow replay from beginning if user wants
+      quizAsked = false;
+      feedbackShown = false;
+      userAnswer = null;
+    }, 7000);
+  }
+});
+
+function selectAnswer(answer) {
+  userAnswer = answer;
+  popup.classList.add("hidden");
+
+  feedback.textContent = "Let's find out...";
+  feedback.classList.remove("hidden");
+
+  setTimeout(() => {
+    feedback.classList.add("hidden");
+    audio.play();
+  }, 2000);
+}
