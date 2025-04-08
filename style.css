@@ -156,18 +156,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.video-placeholder {
-  background: var(--pale-gray);
-  width: 60%;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--dark-maroon);
-  font-size: 3rem;
   box-shadow: 0 0 15px #b43e2d99;
+  width: 100%;  
+  margin: auto;  
 }
 
 @media screen and (max-width: 600px) {
