@@ -1,3 +1,10 @@
+
+function myFunction() {
+  const nav = document.getElementById("myTopnav");
+  nav.classList.toggle("responsive");
+}
+
+// this is for the creation of the fog effect
 let canvas = document.getElementById("canvas");
 class Fog {
     constructor(x, y, tamanho, direction, velocity) {
@@ -20,17 +27,17 @@ class Fog {
         this.me.style.borderRadius = "50%";
         canvas.appendChild(this.me);
     }      
-    animation() {
+    animation() { // in this function, the fog moves by shifting the left and top properties
         this.me.style.left = this.x + "px";
         this.me.style.top = this.y + "px";
         switch (this.direction) {
-            case 0:
+            case 0: // left
                 this.x -= this.velocity;
                 if (this.x + this.width < 0) {
                     this.x = canvas.clientWidth + this.width;
                 }
                 break;
-            case 1:
+            case 1: // up
                 this.x += this.velocity;
                 if (this.x + this.width > canvas.width) {
                     this.me.style.left = -this.width + "px";
@@ -42,7 +49,7 @@ class Fog {
 const fogCount = 20;
 const array = [];
 
-for (let i = 0; i < fogCount; i++) {
+for (let i = 0; i < fogCount; i++) { // create 20 fogs
   const size = {
     w: Math.floor(Math.random() * 150 + 80),
     h: Math.floor(Math.random() * 150 + 80)
@@ -55,7 +62,7 @@ for (let i = 0; i < fogCount; i++) {
   array.push(new Fog(x, y, size, 0, velocity));
 }
 
-function CreateNeb() {
+function CreateNeb() { // this function creates the fog by calling the create and animation functions
   array.forEach((ele) => {
     ele.create();
     ele.animation();
@@ -64,6 +71,8 @@ function CreateNeb() {
 }
 
 CreateNeb();
+
+// this is for the quiz functionality 
 const audio = document.getElementById("story-audio");
 const popup = document.getElementById("quiz-popup");
 const feedback = document.getElementById("quiz-feedback");
